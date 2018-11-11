@@ -1,9 +1,5 @@
 # Docker Image with Telegraf (StatsD), InfluxDB and Grafana
 
-:facepunch: Battle-tested
-
-[![CircleCI](https://circleci.com/gh/samuelebistoletti/docker-statsd-influxdb-grafana.svg?style=svg)](https://circleci.com/gh/samuelebistoletti/docker-statsd-influxdb-grafana)
-
 ## Versions
 
 ### Warning, breaking change: upgrade from version 1.0.x of this image is not supported, all persisted data in volumes will be lost if you delete the container.
@@ -27,7 +23,7 @@ docker run --ulimit nofile=66000:66000 \
   -p 8086:8086 \
   -p 22022:22 \
   -p 8125:8125/udp \
-  samuelebistoletti/docker-statsd-influxdb-grafana:latest
+  zferenczik/docker-statsd-influxdb-grafana:latest
 ```
 
 You can replace `latest` with the desired version listed in changelog file.

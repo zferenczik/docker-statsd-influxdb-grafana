@@ -1,5 +1,6 @@
 FROM ubuntu:16.04
 MAINTAINER Samuele Bistoletti <samuele.bistoletti@gmail.com>
+MAINTAINER Zoltan Ferenczik <zoltanferenczik@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
