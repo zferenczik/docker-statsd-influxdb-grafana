@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+ metrics:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: "/usr/bin/supervisord"
+    image: zferenczik/rttrm:1.0
+    deploy:
+      labels:
+        hu.icellmobilsoft.sqa.monitoring.rttrm: "Real Time Test Result Monitoring"
+      replicas: 1
+    container_name: rttrm
+    restart: always
+    ports:
+      - '3003:3003' # grafana
+      - '8888:8083' # influxdb-admin
+      - '8086:8086' # influxdb-database
+      - '8088:8088' # backup
+      - '8089:8089/udp'
+      - '8125:8125/udp' # statsd
+      - '22022:22' #ssh
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 66000
+        hard: 66000
+    environment:
+      - ENV_SHORT_NAME=sandbox
