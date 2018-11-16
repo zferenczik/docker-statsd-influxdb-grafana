@@ -1,0 +1,5254 @@
+{
+    "__requires": [
+        {
+          "type": "grafana",
+          "id": "grafana",
+          "name": "Grafana",
+          "version": "5.3.2"
+        },
+        {
+          "type": "datasource",
+          "id": "influxdb",
+          "name": "InfluxDB",
+          "version": "1.7.0"
+        }
+      ],
+    
+  "annotations": {
+    "list": []
+  },
+  "description": "Monitor your JMeter load test results in real time with InfluxDB and Grafana.",
+  "editable": true,
+  "gnetId": 3351,
+  "graphTooltip": 0,
+  "hideControls": false,
+  "id": null,
+  "links": [],
+  "refresh": false,
+  "rows": [
+    {
+      "collapse": false,
+      "height": 301,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Number of Threads (Virtual Users)": "#1F78C1"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 0,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 1,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": true,
+          "targets": [
+            {
+              "alias": "Active Virtual Users",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"maxAT\") FROM \"jmeter\" WHERE \"transaction\" = 'internal' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "maxAT"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=",
+                  "value": "internal"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Active Threads (Virtual Users)",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "Error": "#BF1B00",
+            "Errors": "#890F02",
+            "KO": "#BF1B00",
+            "No of Errors": "#BF1B00"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 2,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sortDesc": true,
+            "total": true,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 2,
+          "points": true,
+          "renderer": "flot",
+          "repeat": null,
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Total",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "30s"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(count) FROM \"jmeter\" WHERE \"transaction\" = 'all' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "countError"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "count"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=",
+                  "value": "all"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "KO",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"countError\") FROM \"jmeter\" WHERE \"transaction\" = 'all' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "countError"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=",
+                  "value": "all"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Transactions",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": false,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "columns": [],
+          "datasource": "InfluxDB",
+          "fontSize": "100%",
+          "height": "300",
+          "id": 25,
+          "links": [],
+          "pageSize": null,
+          "repeat": null,
+          "scroll": true,
+          "showHeader": true,
+          "sort": {
+            "col": 2,
+            "desc": true
+          },
+          "span": 4,
+          "styles": [
+            {
+              "alias": "Time",
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "pattern": "Time",
+              "type": "hidden"
+            },
+            {
+              "alias": "No of Errors",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 0,
+              "pattern": "Value",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "alias": "Transaction Name",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "pattern": "Metric",
+              "thresholds": [],
+              "type": "string",
+              "unit": "short"
+            },
+            {
+              "alias": "",
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "decimals": 2,
+              "pattern": "/.*/",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            }
+          ],
+          "targets": [
+            {
+              "alias": "$tag_transaction",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "transaction"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"count\") FROM \"jmeter\" WHERE \"application\" =~ /^$Application$/ AND \"statut\" = 'ko' AND $timeFilter GROUP BY \"transaction\"",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ko"
+                }
+              ]
+            }
+          ],
+          "title": "Errors per Transactions",
+          "transform": "timeseries_to_rows",
+          "type": "table"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(51, 246, 13, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(229, 22, 22, 0.97)"
+          ],
+          "datasource": "InfluxDB",
+          "decimals": 3,
+          "format": "percent",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": true,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 30,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": "",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 2,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "show": false
+          },
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "policy": "default",
+              "query": "SELECT sum(\"countError\")/sum(\"count\")*100 FROM \"jmeter\" WHERE \"transaction\" = 'all' AND \"application\" =~ /^$Application$/ AND $timeFilter",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": "3.00,7.00",
+          "title": "Error Rate %",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "0",
+              "value": "null"
+            }
+          ],
+          "valueName": "current"
+        },
+        {
+          "aliasColors": {
+            "kpi-2-setup-thread-group": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "height": "300",
+          "hideTimeOverride": false,
+          "id": 23,
+          "interval": ">30s",
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": false,
+            "show": false,
+            "sort": "current",
+            "sortDesc": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 2,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "$tag_transaction",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "transaction"
+                  ],
+                  "type": "tag"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "avg"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "max"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "warning",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 15000
+            },
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 30000
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Transactions Average Response Times",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "transparent": false,
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Summary",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 86,
+      "panels": [
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(235, 248, 5, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "InfluxDB",
+          "editable": true,
+          "error": false,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 9,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " Requests",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(237, 221, 14)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"count\") FROM \"jmeter\" WHERE \"application\" =~ /^$Application$/ AND \"transaction\" = '$request' AND \"statut\" = 'all' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "all"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Total Transactions",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "0",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(251, 5, 5, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "InfluxDB",
+          "editable": true,
+          "error": false,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 6,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " Failed",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(237, 14, 54)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"count\") FROM \"jmeter\" WHERE \"application\" =~ /^$Application$/ AND \"transaction\" = '$request' AND \"statut\" = 'ko' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "countError"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ko"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Failed Transactions",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "0",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "cacheTimeout": null,
+          "colorBackground": false,
+          "colorValue": true,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(5, 251, 19, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "datasource": "InfluxDB",
+          "editable": true,
+          "error": false,
+          "format": "none",
+          "gauge": {
+            "maxValue": 100,
+            "minValue": 0,
+            "show": false,
+            "thresholdLabels": false,
+            "thresholdMarkers": true
+          },
+          "id": 8,
+          "interval": null,
+          "links": [],
+          "mappingType": 1,
+          "mappingTypes": [
+            {
+              "name": "value to text",
+              "value": 1
+            },
+            {
+              "name": "range to text",
+              "value": 2
+            }
+          ],
+          "maxDataPoints": 100,
+          "nullPointMode": "connected",
+          "nullText": null,
+          "postfix": " Passed",
+          "postfixFontSize": "50%",
+          "prefix": "",
+          "prefixFontSize": "50%",
+          "rangeMaps": [
+            {
+              "from": "null",
+              "text": "N/A",
+              "to": "null"
+            }
+          ],
+          "span": 4,
+          "sparkline": {
+            "fillColor": "rgba(31, 118, 189, 0.18)",
+            "full": false,
+            "lineColor": "rgb(14, 237, 45)",
+            "show": true
+          },
+          "tableColumn": "",
+          "targets": [
+            {
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT sum(\"count\") FROM \"jmeter\" WHERE \"application\" =~ /^$Application$/ AND \"transaction\" = '$request' AND \"statut\" = 'ok' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "count"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "sum"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                }
+              ]
+            }
+          ],
+          "thresholds": "",
+          "title": "Passed Transactions",
+          "type": "singlestat",
+          "valueFontSize": "80%",
+          "valueMaps": [
+            {
+              "op": "=",
+              "text": "0",
+              "value": "null"
+            }
+          ],
+          "valueName": "total"
+        },
+        {
+          "aliasColors": {
+            "90th Percentage": "#7EB26D",
+            "95th Percentage": "#EAB839",
+            "99th Percentage": "#890F02",
+            "Average": "#6ED0E0",
+            "Max": "#58140C"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "height": "300",
+          "id": 5,
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 8,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Min",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"min\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "min"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "Average",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"avg\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "avg"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "90th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct90.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct90.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "95th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct95.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct95.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "99th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct99.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct99.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "Max",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"max\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "max"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "warning",
+              "fill": false,
+              "line": true,
+              "op": "gt",
+              "value": 15000
+            },
+            {
+              "colorMode": "critical",
+              "fill": false,
+              "line": true,
+              "op": "gt",
+              "value": 30000
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Response Times",
+          "tooltip": {
+            "msResolution": false,
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": [
+              "total"
+            ]
+          },
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "90th Percentage": "#7EB26D",
+            "95th Percentage": "#EAB839",
+            "99th Percentage": "#890F02",
+            "Average": "#6ED0E0",
+            "Max": "#58140C"
+          },
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 0,
+          "height": "300",
+          "id": 27,
+          "legend": {
+            "alignAsTable": true,
+            "avg": true,
+            "current": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": false,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [
+            {
+              "alias": "Average",
+              "yaxis": 1
+            },
+            {
+              "alias": "95th Percentage",
+              "yaxis": 1
+            },
+            {
+              "alias": "99th Percentage",
+              "yaxis": 1
+            },
+            {
+              "alias": "90th Percentage",
+              "yaxis": 1
+            }
+          ],
+          "spaceLength": 10,
+          "span": 4,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Min",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"min\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "min"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "Average",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"avg\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "avg"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "90th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct90.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct90.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "95th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct95.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct95.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "99th Percentage",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"pct99.0\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "pct99.0"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            },
+            {
+              "alias": "Max",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": true,
+              "measurement": "jmeter",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"max\") FROM \"jmeter\" WHERE \"transaction\" = '$request' AND \"statut\" = 'ok' AND \"application\" =~ /^$Application$/ AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": true,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "max"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "transaction",
+                  "operator": "=~",
+                  "value": "/^$request$/"
+                },
+                {
+                  "condition": "AND",
+                  "key": "statut",
+                  "operator": "=",
+                  "value": "ok"
+                },
+                {
+                  "condition": "AND",
+                  "key": "application",
+                  "operator": "=~",
+                  "value": "/^$Application$/"
+                }
+              ]
+            }
+          ],
+          "thresholds": [
+            {
+              "colorMode": "warning",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 15000
+            },
+            {
+              "colorMode": "critical",
+              "fill": true,
+              "line": true,
+              "op": "gt",
+              "value": 30000
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Average Response Times Distribution",
+          "tooltip": {
+            "msResolution": false,
+            "shared": false,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "series",
+            "name": null,
+            "show": false,
+            "values": [
+              "avg"
+            ]
+          },
+          "yaxes": [
+            {
+              "format": "ms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "dtdurationms",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Individual Transaction - $request",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 268,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 3,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 35,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": true,
+            "rightSide": false,
+            "show": true,
+            "sort": "min",
+            "sortDesc": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CREATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "CREATED"
+                }
+              ]
+            },
+            {
+              "alias": "UPDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "request",
+                  "operator": "=",
+                  "value": "UPDATED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CREATED vs. UPDATED Requests",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 3,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 29,
+          "interval": ">30s",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": false,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CREATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItem",
+                  "operator": "=",
+                  "value": "CREATED"
+                }
+              ]
+            },
+            {
+              "alias": "UPDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItem",
+                  "operator": "=",
+                  "value": "UPDATED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CREATED vs. UPDATED Request Items",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Created & Updated Invoice Requests (Last min)",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 259,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "FINISHED": "#508642",
+            "NOTIFIED": "#6D1F62",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02",
+            "RECIEVED": "#0A437C"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 28,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "RECIEVED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "RECEIVED"
+                }
+              ]
+            },
+            {
+              "alias": "CONSTRUCTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "CONSTRUCTED"
+                }
+              ]
+            },
+            {
+              "alias": "VALIDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "G",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "VALIDATED"
+                }
+              ]
+            },
+            {
+              "alias": "PERSISTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "PERSISTED"
+                }
+              ]
+            },
+            {
+              "alias": "EVALUATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "EVALUATED"
+                }
+              ]
+            },
+            {
+              "alias": "FINISHED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "FINISHED"
+                }
+              ]
+            },
+            {
+              "alias": "NOTIFIED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatus",
+                  "operator": "=",
+                  "value": "NOTIFIED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Request Status Distribution",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "ABORTED": "#890F02",
+            "Active Virtual Users": "#447EBC",
+            "CONSTRUCTED": "#EAB839",
+            "Consumer Count": "#1F78C1",
+            "DONE": "#508642",
+            "Dequeue Count": "#629E51",
+            "EVALUATED": "#E24D42",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "PERSISTED": "#EF843C",
+            "Queue Size": "#890F02",
+            "VALIDATED": "#6ED0E0"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 32,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CONSTRUCTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "CONSTRUCTED"
+                }
+              ]
+            },
+            {
+              "alias": "VALIDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "VALIDATED"
+                }
+              ]
+            },
+            {
+              "alias": "PERSISTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "PERSISTED"
+                }
+              ]
+            },
+            {
+              "alias": "EVALUATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "EVALUATED"
+                }
+              ]
+            },
+            {
+              "alias": "ABORTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "ABORTED"
+                }
+              ]
+            },
+            {
+              "alias": "DONE",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatus",
+                  "operator": "=",
+                  "value": "DONE"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Request Item Status Distribution",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Status Distribution (Last min)",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 250,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 3,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 31,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "min",
+            "sortDesc": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CREATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestCumulative",
+                  "operator": "=",
+                  "value": "CREATED"
+                }
+              ]
+            },
+            {
+              "alias": "UPDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestCumulative",
+                  "operator": "=",
+                  "value": "UPDATED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CREATED vs. UPDATED Requests",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 3,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 36,
+          "interval": ">30s",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": false,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sideWidth": null,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CREATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemCumulative",
+                  "operator": "=",
+                  "value": "CREATED"
+                }
+              ]
+            },
+            {
+              "alias": "UPDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemCumulative",
+                  "operator": "=",
+                  "value": "UPDATED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "CREATED vs. UPDATED Request Items",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Created & Updated Invoice Requests (Cumulative)",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": true,
+      "height": 257,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 33,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "RECIEVED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "RECEIVED"
+                }
+              ]
+            },
+            {
+              "alias": "CONSTRUCTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "CONSTRUCTED"
+                }
+              ]
+            },
+            {
+              "alias": "VALIDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "G",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "VALIDATED"
+                }
+              ]
+            },
+            {
+              "alias": "PERSISTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "PERSISTED"
+                }
+              ]
+            },
+            {
+              "alias": "EVALUATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "EVALUATED"
+                }
+              ]
+            },
+            {
+              "alias": "FINISHED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "FINISHED"
+                }
+              ]
+            },
+            {
+              "alias": "NOTIFIED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestStatusCumulative",
+                  "operator": "=",
+                  "value": "NOTIFIED"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Request Status Cumulative Distribution",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "ABORTED": "#890F02",
+            "Active Virtual Users": "#447EBC",
+            "CONSTRUCTED": "#EAB839",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "EVALUATED": "#E24D42",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "PERSISTED": "#EF843C",
+            "Queue Size": "#890F02",
+            "VALIDATED": "#6ED0E0"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 34,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "CONSTRUCTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"enqueueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "CONSTRUCTED"
+                }
+              ]
+            },
+            {
+              "alias": "VALIDATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "VALIDATED"
+                }
+              ]
+            },
+            {
+              "alias": "PERSISTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "PERSISTED"
+                }
+              ]
+            },
+            {
+              "alias": "EVALUATED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "EVALUATED"
+                }
+              ]
+            },
+            {
+              "alias": "ABORTED",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "ABORTED"
+                }
+              ]
+            },
+            {
+              "alias": "DONE",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "oracle",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "requestItemStatusCumulative",
+                  "operator": "=",
+                  "value": "DONE"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Request Item Status Cumulative Distribution",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Status Distribution (Cumulative)",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 267,
+      "panels": [
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 37,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sort": "max",
+            "sortDesc": false,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Message Count",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "$queueName"
+                }
+              ]
+            },
+            {
+              "alias": "Messages Added",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"invoice.management.constructor\" = 'MessagesAdded' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessagesAdded",
+                  "operator": "=",
+                  "value": "$queueName"
+                }
+              ]
+            },
+            {
+              "alias": "Messages Acknowledged",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "G",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessagesAcknowledged",
+                  "operator": "=",
+                  "value": "$queueName"
+                }
+              ]
+            },
+            {
+              "alias": "Consumer Count",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT \"value\" FROM \"amq\" WHERE \"dequeueCount\" =~ /^$queueName$/ AND $timeFilter",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "ConsumerCount",
+                  "operator": "=",
+                  "value": "$queueName"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "$queueName",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        },
+        {
+          "aliasColors": {
+            "Active Virtual Users": "#447EBC",
+            "Consumer Count": "#1F78C1",
+            "Dequeue Count": "#629E51",
+            "Enqueue Count": "#EAB839",
+            "Number of Threads (Virtual Users)": "#1F78C1",
+            "Queue Size": "#890F02"
+          },
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "InfluxDB",
+          "decimals": 2,
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "height": "300",
+          "id": 38,
+          "interval": "",
+          "legend": {
+            "alignAsTable": true,
+            "avg": false,
+            "current": false,
+            "hideEmpty": false,
+            "hideZero": false,
+            "max": true,
+            "min": false,
+            "rightSide": true,
+            "show": true,
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "null",
+          "percentage": false,
+          "pointradius": 3,
+          "points": true,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Construtor",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "C",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.constructor"
+                }
+              ]
+            },
+            {
+              "alias": "Persistor",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "A",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.persistor"
+                }
+              ]
+            },
+            {
+              "alias": "Request Validation",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.request.validation"
+                }
+              ]
+            },
+            {
+              "alias": "Status Validation",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.status.validation"
+                }
+              ]
+            },
+            {
+              "alias": "Request Evaluation",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "E",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.request.evaluation"
+                }
+              ]
+            },
+            {
+              "alias": "Item Evaluation",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "F",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.item.evaluation"
+                }
+              ]
+            },
+            {
+              "alias": "Evaluator",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$aggregation"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "hide": false,
+              "measurement": "artemis",
+              "orderByTime": "ASC",
+              "policy": "default",
+              "query": "SELECT last(\"value\") FROM \"artemis\" WHERE \"MessageCount\" = '$queueName' AND $timeFilter GROUP BY time($aggregation) fill(null)",
+              "rawQuery": false,
+              "refId": "G",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "value"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "last"
+                  }
+                ]
+              ],
+              "tags": [
+                {
+                  "key": "MessageCount",
+                  "operator": "=",
+                  "value": "invoice.management.evaluator"
+                }
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Message Counts",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": true,
+      "title": "Artemis Queue - $queueName",
+      "titleSize": "h6"
+    }
+  ],
+  "schemaVersion": 14,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allValue": null,
+        "current": {
+          "text": "icon.backend.uat",
+          "value": "icon.backend.uat"
+        },
+        "datasource": "InfluxDB",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Application Name",
+        "multi": false,
+        "name": "Application",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"jmeter\" WITH KEY = \"application\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "text": "invoice-300Kb.xml",
+          "value": "invoice-300Kb.xml"
+        },
+        "datasource": "InfluxDB",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Transaction Name",
+        "multi": false,
+        "name": "request",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"jmeter\" WITH KEY = \"transaction\" WHERE \"application\" =~ /^$Application$/",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": "*",
+        "current": {
+          "text": "invoice.management.persistor",
+          "value": "invoice.management.persistor"
+        },
+        "datasource": "InfluxDB",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Queue Name",
+        "multi": false,
+        "name": "queueName",
+        "options": [],
+        "query": "SHOW TAG VALUES FROM \"artemis\" WITH KEY = \"MessageCount\"",
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "tagValuesQuery": null,
+        "tags": [],
+        "tagsQuery": null,
+        "type": "query",
+        "useTags": false
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "1min",
+          "value": "60s"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Aggregation Interval",
+        "multi": false,
+        "name": "aggregation",
+        "options": [
+          {
+            "selected": false,
+            "text": "1s",
+            "value": "1s"
+          },
+          {
+            "selected": false,
+            "text": "10s",
+            "value": "10s"
+          },
+          {
+            "selected": false,
+            "text": "30s",
+            "value": "30s"
+          },
+          {
+            "selected": true,
+            "text": "1min",
+            "value": "60s"
+          },
+          {
+            "selected": false,
+            "text": "10min",
+            "value": "600s"
+          },
+          {
+            "selected": false,
+            "text": "30min",
+            "value": "1800s"
+          },
+          {
+            "selected": false,
+            "text": "1hour",
+            "value": "3600s"
+          }
+        ],
+        "query": "1s,10s,30s,1min,10min,30min,1hour",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "ICON Performance Dashboard",
+  "version": 1
+}
